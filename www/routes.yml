@@ -1,10 +1,15 @@
 /user/add:
   controller: "User"
   action: "register"
+  
+/user/registerbd:
+  controller: "User"
+  action: "registerbd"
 
 /se-connecter:
   controller: "User"
   action: "login"
+
 
 /se-deconnecter:
   controller: "User"
@@ -17,3 +22,11 @@
 /page:
   controller: "page"
   action: "show"
+
+/connection-validator:
+  controller: "User"
+  action: "connection"
+
+/dashboard:
+  controller: "page"
+  action: "dashboard"
