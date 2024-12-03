@@ -7,11 +7,10 @@ use PDOException;
 
 class SQL
 {
-    private static $instance = null; // Singleton instance
-    private PDO $pdo; // PDO instance for database interaction
+    protected PDO $pdo; // PDO instance for database interaction
 
     // Private constructor to prevent direct instantiation
-    private function __construct()
+    public function __construct()
     {
         try {
             // Initialize the PDO connection (database connection setup)
@@ -29,20 +28,4 @@ class SQL
            ]);
        return $queryPrepared->fetch();
     }
-    // Static method to get the Singleton instance
-    public static function getBdd(): SQL
-    {
-        if (self::$instance === null) {
-            self::$instance = new SQL();
-        }
-        return self::$instance;
-    }
-
-    // Example method for executing queries (such as SELECT)
-    public function prepare(string $query)
-    {
-        return $this->pdo->prepare($query);
-    }
-
-    // Other methods for handling database queries can be added here
 }

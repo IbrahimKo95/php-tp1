@@ -10,8 +10,6 @@ if (isset($_SESSION['flash']['success'])) {
     unset($_SESSION['flash']['success']);
 }
 ?>
-<?php  ob_start() ?>
-    <!-- Your HTML form code for user registration -->
     <form method="POST" action="/user/registerbd">
         <label for="fullname">Full Name:</label>
         <input type="text" id="fullname" name="fullname" required>
@@ -27,8 +25,3 @@ if (isset($_SESSION['flash']['success'])) {
 
         <button type="submit" name="save_user_btn">Register</button>
     </form>
-<?php
-$content=ob_get_clean();
-$title="Inscrpition";
-require "template.php";
-?>
