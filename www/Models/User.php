@@ -71,6 +71,18 @@ class User extends SQL
         return $query->fetch();
     }
 
+    public function getById($id) {
+        $sql = "SELECT * FROM users WHERE id = :id";
+        $query = $this->pdo->prepare($sql);
+        $query->execute(['id' => $id]);
+        $query->setFetchMode(PDO::FETCH_CLASS, 'App\Models\User');
+        return $query->fetch();
+    }
+
+    public function checkPassword($hashed_password) {
+        return password_verify($hashed_password, $this->password);
+    }
+
     public function insert($email, $fullname, $password) {
         try {
             $sql = "INSERT INTO users (email, fullname, password) VALUES (:email, :fullname, :password)";

@@ -6,6 +6,18 @@
   controller: "User"
   action: "registerbd"
 
+/user/login:
+  controller: "User"
+  action: "login"
+
+/user/loginbd:
+  controller: "User"
+  action: "loginbd"
+
+/user/home:
+  controller: "User"
+  action: "home"
+
 /se-connecter:
   controller: "User"
   action: "login"

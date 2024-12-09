@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Core\View;
 use App\Core\SQL;
 use App\Models\User as UserModel;
+use Exception;
 
 class User
 {
@@ -21,6 +22,66 @@ class User
     {
         $view = new View("User/register.php", "back.php");
         // You can pass additional data to the view, like validation errors or messages
+    }
+
+    public function home(): void
+    {
+        $user = $_SESSION['user'];
+        if (isset($user)) {
+            $userModel = new UserModel();
+            $user = $userModel->getById($_SESSION['user']['id']);
+            if (isset($user)) {
+                $view = new View("index.php");
+                $view->addData('user', $user);
+            } else {
+                $_SESSION['login']['error'] = 'Error.';
+                $view = new View("User/login.php", "back.php");
+            }
+        } else {
+            $_SESSION['login']['error'] = 'Error.';
+            $view = new View("User/login.php", "back.php");
+        }
+    }
+
+    public function login(): void
+    {
+        $view = new View("User/login.php", "back.php");
+    }
+
+    public function loginbd(): void{
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login_btn'])) {
+            if (empty($_POST['email']) || empty($_POST['password'])) {
+                $_SESSION['login']['error'] = 'All fields are required.';
+                header('Location: /user/login');
+                exit();
+            }
+        }
+
+        $email = trim($_POST['email']);
+        $password = $_POST['password'];
+
+        try {
+            $userModel = new UserModel();
+            $user = $userModel->getOneByEmail($email);
+
+            if(!$user){
+                $_SESSION['login']['error'] = 'Inexistant user with this email.';
+                header('Location: /user/login');
+                exit();
+            }
+
+            if(!$user->checkPassword($password)){
+                $_SESSION['login']['error'] = 'Incorrect password';
+                header('Location: /user/login');
+                exit();
+            }
+            $_SESSION['user']['id'] = $user->getId();
+
+            header('Location: /user/home');
+        } catch (\PDOException $e) {
+            $_SESSION['login']['error'] = 'Database error: ' . $e->getMessage();
+            header('Location: /user/login');
+        }
     }
 
     // Handle user registration logic
@@ -52,7 +113,7 @@ class User
             }
 
             // Hash the password for security
-            $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             // Insert user into the database directly using SQL class
             try {
@@ -67,7 +128,7 @@ class User
                 // Execute the query
                 if ($userModel->insert($email, $fullname, $hashedPassword)) {
                     $_SESSION['flash']['success'] = 'User registered successfully.';
-                    header('Location: /user/add');
+                    header('Location: /user/login');
                 } else {
                     $_SESSION['flash']['error'] = 'An error occurred, please try again.';
                     header('Location: /user/add');
@@ -76,7 +137,6 @@ class User
                 $_SESSION['flash']['error'] = 'Database error: ' . $e->getMessage();
                 header('Location: /user/add');
             }
-
             exit();
         }
     }
