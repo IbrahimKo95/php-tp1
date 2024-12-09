@@ -16,5 +16,5 @@ if (isset($_SESSION['login']['success'])) {
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
 
-        <button type="submit" name="save_user_btn">Register</button>
+        <button type="submit" name="login_btn">Register</button>
     </form>

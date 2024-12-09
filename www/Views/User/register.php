@@ -23,5 +23,5 @@ if (isset($_SESSION['flash']['success'])) {
         <label for="password_confirmation">Confirm Password:</label>
         <input type="password" id="password_confirmation" name="password_confirmation" required>
 
-        <button type="submit" name="login_btn">Login</button>
+        <button type="submit" name="save_user_btn">Login</button>
     </form>
