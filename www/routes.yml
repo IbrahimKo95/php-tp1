@@ -1,3 +1,6 @@
+/:
+  controller: "page"
+  action: "home"
 /user/add:
   controller: "User"
   action: "register"
@@ -18,12 +21,7 @@
   controller: "User"
   action: "home"
 
-/se-connecter:
-  controller: "User"
-  action: "login"
-
-
-/se-deconnecter:
+/user/logout:
   controller: "User"
   action: "logout"
 

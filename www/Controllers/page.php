@@ -7,6 +7,17 @@ use App\Core\SQL;
 
 class page
 {
+    public function __construct()
+    {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+    }
+
+    public function home()
+    {
+        $view = new View("page/home.php");
+    }
 
     public function show(){
         $pageId = $_GET["id"];

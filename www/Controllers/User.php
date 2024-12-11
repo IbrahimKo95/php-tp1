@@ -34,12 +34,10 @@ class User
                 $view = new View("index.php");
                 $view->addData('user', $user);
             } else {
-                $_SESSION['login']['error'] = 'Error.';
-                $view = new View("User/login.php", "back.php");
+                header("Location: /user/login");
             }
         } else {
-            $_SESSION['login']['error'] = 'Error.';
-            $view = new View("User/login.php", "back.php");
+            header("Location: /user/login");
         }
     }
 
@@ -139,6 +137,12 @@ class User
             }
             exit();
         }
+    }
+
+    public function logout(): void
+    {
+        session_destroy();
+        header('Location: /user/login');
     }
 
 
